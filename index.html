@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>阿百川的AIGC作品集</title>
+    <meta name="description" content="阿百川的AIGC作品集 - 电商视觉、品牌TVC、AI漫剧、AI数字人">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 机甲加载动画 -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-scan-line"></div>
+        <div class="loading-content">
+            <div class="loading-hex-wrap">
+                <div class="loading-hex h1"></div>
+                <div class="loading-hex h2"></div>
+                <div class="loading-hex h3"></div>
+                <div class="loading-core">川</div>
+            </div>
+            <div class="loading-status" id="loadingStatus">SYSTEM INITIALIZING</div>
+            <div class="loading-bar-wrap">
+                <div class="loading-bar" id="loadingBar"></div>
+                <span class="loading-pct" id="loadingPct">0%</span>
+            </div>
+            <div class="loading-log" id="loadingLog"></div>
+        </div>
+        <button class="loading-skip" id="loadingSkip">SKIP ▸</button>
+    </div>
+
+    <!-- 背景粒子层 -->
+    <canvas class="particle-canvas" id="particleCanvas"></canvas>
+    <!-- 鼠标特效层 -->
+    <canvas class="cursor-canvas" id="cursorCanvas"></canvas>
+    <!-- 自定义光标 -->
+    <div class="custom-cursor" id="customCursor"></div>
+
+    <!-- 动态背景 -->
+    <div class="bg-grid"></div>
+    <div class="bg-glow"></div>
+
+    <!-- 扫描线 -->
+    <div class="scan-line"></div>
+
+    <!-- HUD 角标 -->
+    <div class="hud-corner hud-tl"></div>
+    <div class="hud-corner hud-tr"></div>
+    <div class="hud-corner hud-bl"></div>
+    <div class="hud-corner hud-br"></div>
+
+    <!-- 顶部导航 -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#hero" class="nav-logo">
+                <span class="logo-mark"><span>川</span></span>
+                <span class="logo-text">阿百川 · AIGC</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="#hero" class="nav-link active">首页</a></li>
+                <li><a href="#intro" class="nav-link">个人简介</a></li>
+                <li><a href="#ai-video" class="nav-link">AI 视频</a></li>
+                <li><a href="#ip-design" class="nav-link">IP 设计</a></li>
+                <li><a href="#works" class="nav-link">电商设计</a></li>
+            </ul>
+            <button class="nav-toggle" id="navToggle">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero 首屏 -->
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <div class="hero-tag">
+                <span class="tag-dot"></span>
+                AIGC Visual Creator · 阿百川
+            </div>
+            <h1 class="hero-title">
+                <span class="line">阿百川的</span>
+                <span class="line gradient-text">AIGC 作品集</span>
+            </h1>
+            <p class="hero-subtitle">让想象力成为可见的价值 · AI 视频 · 电商视觉 · AI 漫剧 · IP 设计 · 数字人</p>
+            <div class="hero-tags">
+                <span class="chip">AI 设计</span>
+                <span class="chip">商业视觉</span>
+                <span class="chip">分镜脚本</span>
+                <span class="chip">影像创作</span>
+                <span class="chip">电商主图</span>
+                <span class="chip">品牌 TVC</span>
+            </div>
+            <div class="hero-cta">
+                <a href="#works" class="btn btn-primary">
+                    <span>查看作品</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+                </a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat">
+                    <div class="stat-num" data-target="120">0</div>
+                    <div class="stat-label">完成项目</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-num" data-target="6">0</div>
+                    <div class="stat-label">服务品牌</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-num" data-target="20">0</div>
+                    <div class="stat-label">AI 工具掌握</div>
+                </div>
+            </div>
+        </div>
+        <div class="hero-mecha">
+            <div class="mecha-hex h1"></div>
+            <div class="mecha-hex h2"></div>
+            <div class="mecha-hex h3"></div>
+            <div class="mecha-core"></div>
+            <div class="mecha-node mn1"></div>
+            <div class="mecha-node mn2"></div>
+            <div class="mecha-node mn3"></div>
+            <div class="mecha-node mn4"></div>
+        </div>
+    </section>
+
+    <!-- 作品轮播 -->
+    <section class="carousel-section" id="carousel">
+        <div class="container">
+            <div class="carousel-header">
+                <span class="carousel-tag">// FEATURED WORKS</span>
+            </div>
+            <div class="carousel-wrap" id="carouselWrap">
+                <button class="carousel-arrow carousel-prev" id="carouselPrev">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+                </button>
+                <div class="carousel-track" id="carouselTrack">
+                    <div class="carousel-slide" data-type="video" data-src="videos/tvc-jieya.mp4">
+                        <img src="images/posters/tvc-jieya.jpg" alt="洁牙器 TVC">
+                        <div class="slide-overlay"><span>Beemag 洁牙器 TVC</span></div>
+                    </div>
+                    <div class="carousel-slide" data-type="image">
+                        <img src="images/ecom/jieya-main-1.png" alt="洁牙器主图">
+                        <div class="slide-overlay"><span>洁牙器电商主图</span></div>
+                    </div>
+                    <div class="carousel-slide" data-type="video" data-src="videos/tvc-fan.mp4">
+                        <img src="images/posters/tvc-fan.jpg" alt="风扇 TVC">
+                        <div class="slide-overlay"><span>本博风扇 TVC</span></div>
+                    </div>
+                    <div class="carousel-slide" data-type="video" data-src="videos/digital-cat.mp4">
+                        <img src="images/posters/digital-cat.jpg" alt="哈基米数字人">
+                        <div class="slide-overlay"><span>AI 数字人 · 哈基米</span></div>
+                    </div>
+                    <div class="carousel-slide" data-type="image">
+                        <img src="images/pillow/pillow-main-1.jpg" alt="枕头主图">
+                        <div class="slide-overlay"><span>雷沃丝枕头主图</span></div>
+                    </div>
+                    <div class="carousel-slide" data-type="video" data-src="videos/anime-ep1.mp4">
+                        <img src="images/posters/anime-ep1.jpg" alt="漫剧第1集">
+                        <div class="slide-overlay"><span>混沌觉醒 · 第一集</span></div>
+                    </div>
+                    <div class="carousel-slide" data-type="image">
+                        <img src="images/spray/spray-1.png" alt="蓬松喷雾">
+                        <div class="slide-overlay"><span>蓬松喷雾主图</span></div>
+                    </div>
+                    <div class="carousel-slide" data-type="image">
+                        <img src="images/ip/abaichuan/character-design.png" alt="阿百川IP设定">
+                        <div class="slide-overlay"><span>阿百川 IP 形象设定</span></div>
+                    </div>
+                    <div class="carousel-slide" data-type="image">
+                        <img src="images/ip/amian/initial-design.png" alt="阿眠IP设定">
+                        <div class="slide-overlay"><span>阿眠 IP 形象设定</span></div>
+                    </div>
+                    <div class="carousel-slide" data-type="video" data-src="videos/tvc-rewomax.mp4">
+                        <img src="images/posters/tvc-rewomax.jpg" alt="REWOMAX TVC">
+                        <div class="slide-overlay"><span>REWOMAX TVC</span></div>
+                    </div>
+                </div>
+                <button class="carousel-arrow carousel-next" id="carouselNext">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+                </button>
+                <div class="carousel-dots" id="carouselDots"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 01 个人简介 -->
+    <section class="section section-intro" id="intro">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-num">01</div>
+                <h2 class="section-title">个人简介</h2>
+                <p class="section-sub">// PROFILE</p>
+            </div>
+
+            <div class="intro-grid">
+                <div class="intro-card intro-bio">
+                    <div class="intro-name">
+                        <h3>阿百川</h3>
+                        <span class="intro-role">AIGC 视觉创作者</span>
+                    </div>
+                    <p class="intro-text">
+                        专注于 AI 驱动的商业视觉生产，擅长把品牌需求拆解为可批量复制的视觉资产。
+                        从脚本到成片、从主图到详情页，提供端到端的 AIGC 视觉解决方案。
+                    </p>
+                    <div class="intro-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">所在地</span>
+                            <span class="meta-value">广州</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">专长</span>
+                            <span class="meta-value">AI 视觉 / 电商影像 / 品牌 TVC</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="intro-card">
+                    <div class="card-tag">工具栈</div>
+                    <div class="tool-grid">
+                        <span class="tool">Midjourney</span>
+                        <span class="tool">Stable Diffusion</span>
+                        <span class="tool">ComfyUI</span>
+                        <span class="tool">Runway</span>
+                        <span class="tool">Sora</span>
+                        <span class="tool">Kling</span>
+                        <span class="tool">Pika</span>
+                        <span class="tool">Suno</span>
+                        <span class="tool">ChatGPT</span>
+                        <span class="tool">Claude</span>
+                        <span class="tool">PS / AI</span>
+                        <span class="tool">剪映 / PR</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 02 AI 视频精选 -->
+    <section class="section section-video" id="ai-video">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-num">02</div>
+                <h2 class="section-title">AI 视频精选</h2>
+                <p class="section-sub">// AI_VIDEO</p>
+            </div>
+
+            <!-- TVC 商业广告 -->
+            <div class="video-block">
+                <div class="block-title">
+                    <span class="block-num">A.</span>
+                    <h3>商业 TVC</h3>
+                    <span class="block-line"></span>
+                </div>
+                <div class="video-grid">
+                    <div class="video-card">
+                        <div class="video-cover" data-src="videos/tvc-jieya.mp4">
+                            <img src="images/posters/tvc-jieya.jpg" alt="洁牙器 TVC" loading="lazy">
+                            <div class="play-btn"><svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+                        </div>
+                        <div class="video-info">
+                            <h4>Beemag 超声波洁牙器</h4>
+                            <p>产品卖点 · 15s 短视频</p>
+                        </div>
+                    </div>
+
+                    <div class="video-card">
+                        <div class="video-cover" data-src="videos/tvc-fan.mp4">
+                            <img src="images/posters/tvc-fan.jpg" alt="风扇 TVC" loading="lazy">
+                            <div class="play-btn"><svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+                        </div>
+                        <div class="video-info">
+                            <h4>本博循环扇</h4>
+                            <p>场景化种草 · 15s</p>
+                        </div>
+                    </div>
+
+                    <div class="video-card">
+                        <div class="video-cover" data-src="videos/tvc-keyboard.mp4">
+                            <img src="images/posters/tvc-keyboard.jpg" alt="机械键盘 TVC" loading="lazy">
+                            <div class="play-btn"><svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+                        </div>
+                        <div class="video-info">
+                            <h4>机械键盘</h4>
+                            <p>科技感产品演示</p>
+                        </div>
+                    </div>
+
+                    <div class="video-card">
+                        <div class="video-cover" data-src="videos/tvc-cocktail.mp4">
+                            <img src="images/posters/tvc-cocktail.jpg" alt="鸡尾酒 TVC" loading="lazy">
+                            <div class="play-btn"><svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+                        </div>
+                        <div class="video-info">
+                            <h4>o 鸡尾酒</h4>
+                            <p>饮品氛围片</p>
+                        </div>
+                    </div>
+
+                    <div class="video-card">
+                        <div class="video-cover" data-src="videos/tvc-snack.mp4">
+                            <img src="images/posters/tvc-snack.jpg" alt="干脆面 TVC" loading="lazy">
+                            <div class="play-btn"><svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+                        </div>
+                        <div class="video-info">
+                            <h4>魔法士干脆面</h4>
+                            <p>怀旧童年风</p>
+                        </div>
+                    </div>
+
+                    <div class="video-card">
+                        <div class="video-cover" data-src="videos/tvc-pet.mp4">
+                            <img src="images/posters/tvc-pet.jpg" alt="宠物玩具球 TVC" loading="lazy">
+                            <div class="play-btn"><svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+                        </div>
+                        <div class="video-info">
+                            <h4>宠物玩具球</h4>
+                            <p>趣味场景演绎</p>
+                        </div>
+                    </div>
+
+                    <div class="video-card">
+                        <div class="video-cover" data-src="videos/tvc-rewomax.mp4">
+                            <img src="images/posters/tvc-rewomax.jpg" alt="REWOMAX TVC" loading="lazy">
+                            <div class="play-btn"><svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+                        </div>
+                        <div class="video-info">
+                            <h4>REWOMAX</h4>
+                            <p>海外品牌 TVC</p>
+                        </div>
+                    </div>
+
+                    <div class="video-card">
+                        <div class="video-cover" data-src="videos/tvc-yujitingfeng.mp4">
+                            <img src="images/posters/tvc-yujitingfeng.jpg" alt="雨季听风 TVC" loading="lazy">
+                            <div class="play-btn"><svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+                        </div>
+                        <div class="video-info">
+                            <h4>雨季听风</h4>
+                            <p>氛围感短片</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI 数字人 / MV -->
+            <div class="video-block">
+                <div class="block-title">
+                    <span class="block-num">B.</span>
+                    <h3>AI 数字人 · MV</h3>
+                    <span class="block-line"></span>
+                </div>
+                <div class="video-grid">
+                    <div class="video-card">
+                        <div class="video-cover" data-src="videos/digital-cat.mp4">
+                            <img src="images/posters/digital-cat.jpg" alt="哈基米南北绿豆" loading="lazy">
+                            <div class="play-btn"><svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+                        </div>
+                        <div class="video-info">
+                            <h4>哈基米南北绿豆</h4>
+                            <p>AI 数字人 · 趣味短视频</p>
+                        </div>
+                    </div>
+
+                    <div class="video-card">
+                        <div class="video-cover" data-src="videos/digital-pillow.mp4">
+                            <img src="images/posters/digital-pillow.jpg" alt="靠枕 AI 数字人" loading="lazy">
+                            <div class="play-btn"><svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+                        </div>
+                        <div class="video-info">
+                            <h4>靠枕 AI 数字人</h4>
+                            <p>电商种草口播</p>
+                        </div>
+                    </div>
+
+                    <div class="video-card">
+                        <div class="video-cover" data-src="videos/digital-lizi.mp4">
+                            <img src="images/posters/digital-lizi.jpg" alt="半边红李 AI 数字人" loading="lazy">
+                            <div class="play-btn"><svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+                        </div>
+                        <div class="video-info">
+                            <h4>半边红李</h4>
+                            <p>AI 数字人 · 农产品口播</p>
+                        </div>
+                    </div>
+
+                    <div class="video-card">
+                        <div class="video-cover" data-src="videos/mv-yunuan.mp4">
+                            <img src="images/posters/mv-yunuan.jpg" alt="雨暖 MV" loading="lazy">
+                            <div class="play-btn"><svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+                        </div>
+                        <div class="video-info">
+                            <h4>雨暖 MV</h4>
+                            <p>AI 影像叙事</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI 漫剧 -->
+            <div class="video-block">
+                <div class="block-title">
+                    <span class="block-num">C.</span>
+                    <h3>AI 漫剧</h3>
+                    <span class="block-line"></span>
+                </div>
+                <div class="anime-block">
+                    <div class="anime-episodes">
+                        <h4 class="ep-title">漫剧正片</h4>
+                        <div class="video-grid">
+                            <div class="video-card">
+                                <div class="video-cover" data-src="videos/anime-ep1.mp4">
+                                    <img src="images/posters/anime-ep1.jpg" alt="混沌觉醒1" loading="lazy">
+                                    <div class="play-btn"><svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+                                </div>
+                                <div class="video-info">
+                                    <h4>《混沌觉醒》1</h4>
+                                    <p>AI 漫剧</p>
+                                </div>
+                            </div>
+                            <div class="video-card">
+                                <div class="video-cover" data-src="videos/anime-ep2.mp4">
+                                    <img src="images/posters/anime-ep2.jpg" alt="混沌觉醒2" loading="lazy">
+                                    <div class="play-btn"><svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+                                </div>
+                                <div class="video-info">
+                                    <h4>《混沌觉醒》2</h4>
+                                    <p>AI 漫剧</p>
+                                </div>
+                            </div>
+                            <div class="video-card">
+                                <div class="video-cover" data-src="videos/anime-ep3.mp4">
+                                    <img src="images/posters/anime-ep3.jpg" alt="混沌觉醒3" loading="lazy">
+                                    <div class="play-btn"><svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+                                </div>
+                                <div class="video-info">
+                                    <h4>《混沌觉醒》3</h4>
+                                    <p>AI 漫剧</p>
+                                </div>
+                            </div>
+                            <div class="video-card">
+                                <div class="video-cover" data-src="videos/anime-ep4.mp4">
+                                    <img src="images/posters/anime-ep4.jpg" alt="混沌觉醒4" loading="lazy">
+                                    <div class="play-btn"><svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+                                </div>
+                                <div class="video-info">
+                                    <h4>《混沌觉醒》4</h4>
+                                    <p>AI 漫剧</p>
+                                </div>
+                            </div>
+                            <div class="video-card">
+                                <div class="video-cover" data-src="videos/anime-ep5.mp4">
+                                    <img src="images/posters/anime-ep5.jpg" alt="废土机械" loading="lazy">
+                                    <div class="play-btn"><svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+                                </div>
+                                <div class="video-info">
+                                    <h4>《废土机械》</h4>
+                                    <p>AI 漫剧</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 03 IP 形象设计 -->
+    <section class="section section-ip" id="ip-design">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-num">03</div>
+                <h2 class="section-title">IP 形象设计</h2>
+                <p class="section-sub">// IP_DESIGN</p>
+            </div>
+
+            <!-- 阿百川 -->
+            <div class="video-block">
+                <div class="block-title">
+                    <span class="block-num">A.</span>
+                    <h3>阿百川</h3>
+                    <span class="block-line"></span>
+                </div>
+                <div class="ip-intro">
+                    <p>个人 IP 形象「阿百川」— 从初步设计到完整设定，涵盖人物设定、三视图、表情包、配件展示及周边延展。</p>
+                </div>
+                <div class="ip-grid">
+                    <a href="images/ip/abaichuan/character-design.png" class="work-card" data-lightbox>
+                        <img src="images/ip/abaichuan/character-design.png" alt="阿百川人物设定" loading="lazy">
+                    </a>
+                    <a href="images/ip/abaichuan/design-3view.png" class="work-card" data-lightbox>
+                        <img src="images/ip/abaichuan/design-3view.png" alt="阿百川三视图" loading="lazy">
+                    </a>
+                    <a href="images/ip/abaichuan/initial-design.png" class="work-card" data-lightbox>
+                        <img src="images/ip/abaichuan/initial-design.png" alt="阿百川初步设计" loading="lazy">
+                    </a>
+                    <a href="images/ip/abaichuan/expression-set.png" class="work-card" data-lightbox>
+                        <img src="images/ip/abaichuan/expression-set.png" alt="阿百川表情设定" loading="lazy">
+                    </a>
+                    <a href="images/ip/abaichuan/emoji-pack.png" class="work-card" data-lightbox>
+                        <img src="images/ip/abaichuan/emoji-pack.png" alt="阿百川表情包" loading="lazy">
+                    </a>
+                    <a href="images/ip/abaichuan/accessories.png" class="work-card" data-lightbox>
+                        <img src="images/ip/abaichuan/accessories.png" alt="阿百川配件展示" loading="lazy">
+                    </a>
+                    <a href="images/ip/abaichuan/course-interaction.png" class="work-card" data-lightbox>
+                        <img src="images/ip/abaichuan/course-interaction.png" alt="阿百川课程互动" loading="lazy">
+                    </a>
+                    <a href="images/ip/abaichuan/merchandise.png" class="work-card" data-lightbox>
+                        <img src="images/ip/abaichuan/merchandise.png" alt="阿百川周边" loading="lazy">
+                    </a>
+                </div>
+            </div>
+
+            <!-- 阿眠 -->
+            <div class="video-block">
+                <div class="block-title">
+                    <span class="block-num">B.</span>
+                    <h3>阿眠</h3>
+                    <span class="block-line"></span>
+                </div>
+                <div class="ip-intro">
+                    <p>原创 IP 形象「阿眠」— 包含 IP 初步设计、三视图设定、关键道具、动作设定、生活场景、表情设定、身体形变及转面辅助设定，附小剧场视频。</p>
+                </div>
+                <div class="ip-grid">
+                    <a href="images/ip/amian/initial-design.png" class="work-card" data-lightbox>
+                        <img src="images/ip/amian/initial-design.png" alt="阿眠IP初步设计" loading="lazy">
+                    </a>
+                    <a href="images/ip/amian/design-3view.png" class="work-card" data-lightbox>
+                        <img src="images/ip/amian/design-3view.png" alt="阿眠三视图设定" loading="lazy">
+                    </a>
+                    <a href="images/ip/amian/key-props.png" class="work-card" data-lightbox>
+                        <img src="images/ip/amian/key-props.png" alt="阿眠关键道具设定" loading="lazy">
+                    </a>
+                    <a href="images/ip/amian/action-poses.png" class="work-card" data-lightbox>
+                        <img src="images/ip/amian/action-poses.png" alt="阿眠动作设定" loading="lazy">
+                    </a>
+                    <a href="images/ip/amian/life-scenes.png" class="work-card" data-lightbox>
+                        <img src="images/ip/amian/life-scenes.png" alt="阿眠生活场景设计" loading="lazy">
+                    </a>
+                    <a href="images/ip/amian/expression-set.png" class="work-card" data-lightbox>
+                        <img src="images/ip/amian/expression-set.png" alt="阿眠表情设定图" loading="lazy">
+                    </a>
+                    <a href="images/ip/amian/body-morph.png" class="work-card" data-lightbox>
+                        <img src="images/ip/amian/body-morph.png" alt="阿眠身体形变设定图" loading="lazy">
+                    </a>
+                    <a href="images/ip/amian/turn-assist.png" class="work-card" data-lightbox>
+                        <img src="images/ip/amian/turn-assist.png" alt="阿眠转面辅助设定图" loading="lazy">
+                    </a>
+                </div>
+                <div class="video-grid" style="margin-top: 1.5rem;">
+                    <div class="video-card">
+                        <div class="video-cover" data-src="videos/amian-ep1.mp4">
+                            <img src="images/posters/amian-ep1.jpg" alt="阿眠小剧场1" loading="lazy">
+                            <div class="play-btn"><svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+                        </div>
+                        <div class="video-info">
+                            <h4>阿眠小剧场 · 第一集</h4>
+                            <p>IP 动画短片</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 04 其他作品 -->
+    <section class="section section-works" id="works">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-num">04</div>
+                <h2 class="section-title">电商设计</h2>
+                <p class="section-sub">// GALLERY</p>
+            </div>
+
+            <!-- Tab 切换 -->
+            <div class="works-tabs-wrap">
+                <div class="works-tabs">
+                    <button class="tab-btn active" data-tab="ecom">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+                        <span>电商主图</span>
+                    </button>
+                    <button class="tab-btn" data-tab="banner">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/></svg>
+                        <span>Banner / 海报</span>
+                    </button>
+                    <button class="tab-btn" data-tab="detail">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                        <span>详情页</span>
+                    </button>
+                </div>
+                <p class="tabs-hint">点击下方分类标签，查看不同设计类型 →</p>
+            </div>
+
+            <!-- 电商主图 -->
+            <div class="works-panel active" id="panel-ecom">
+                <div class="works-group">
+                    <div class="group-head">
+                        <h3 class="group-title">Beemag 洁牙器</h3>
+                        <span class="group-count">5 张主图</span>
+                    </div>
+                    <div class="scroll-carousel">
+                        <button class="scroll-btn scroll-prev" aria-label="向左滑动"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>
+                        <div class="scroll-track">
+                            <a href="images/ecom/jieya-main-1.png" class="work-card" data-lightbox>
+                                <img src="images/ecom/jieya-main-1.png" alt="洁牙器主图1" loading="lazy">
+                            </a>
+                            <a href="images/ecom/jieya-main-2.png" class="work-card" data-lightbox>
+                                <img src="images/ecom/jieya-main-2.png" alt="洁牙器主图2" loading="lazy">
+                            </a>
+                            <a href="images/ecom/jieya-main-3.png" class="work-card" data-lightbox>
+                                <img src="images/ecom/jieya-main-3.png" alt="洁牙器主图3" loading="lazy">
+                            </a>
+                            <a href="images/ecom/jieya-main-4.png" class="work-card" data-lightbox>
+                                <img src="images/ecom/jieya-main-4.png" alt="洁牙器主图4" loading="lazy">
+                            </a>
+                            <a href="images/ecom/jieya-main-5.png" class="work-card" data-lightbox>
+                                <img src="images/ecom/jieya-main-5.png" alt="洁牙器主图5" loading="lazy">
+                            </a>
+                        </div>
+                        <button class="scroll-btn scroll-next" aria-label="向右滑动"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button>
+                    </div>
+                </div>
+
+                <div class="works-group">
+                    <div class="group-head">
+                        <h3 class="group-title">本博风扇</h3>
+                        <span class="group-count">5 张主图</span>
+                    </div>
+                    <div class="scroll-carousel">
+                        <button class="scroll-btn scroll-prev" aria-label="向左滑动"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>
+                        <div class="scroll-track">
+                            <a href="images/fan/fan-main-1.png" class="work-card" data-lightbox>
+                                <img src="images/fan/fan-main-1.png" alt="风扇主图1" loading="lazy">
+                            </a>
+                            <a href="images/fan/fan-main-2.png" class="work-card" data-lightbox>
+                                <img src="images/fan/fan-main-2.png" alt="风扇主图2" loading="lazy">
+                            </a>
+                            <a href="images/fan/fan-main-3.jpg" class="work-card" data-lightbox>
+                                <img src="images/fan/fan-main-3.jpg" alt="风扇主图3" loading="lazy">
+                            </a>
+                            <a href="images/fan/fan-main-4.jpg" class="work-card" data-lightbox>
+                                <img src="images/fan/fan-main-4.jpg" alt="风扇主图4" loading="lazy">
+                            </a>
+                            <a href="images/fan/fan-main-5.jpg" class="work-card" data-lightbox>
+                                <img src="images/fan/fan-main-5.jpg" alt="风扇主图5" loading="lazy">
+                            </a>
+                        </div>
+                        <button class="scroll-btn scroll-next" aria-label="向右滑动"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button>
+                    </div>
+                </div>
+
+                <div class="works-group">
+                    <div class="group-head">
+                        <h3 class="group-title">雷沃丝枕头</h3>
+                        <span class="group-count">5 张主图</span>
+                    </div>
+                    <div class="scroll-carousel">
+                        <button class="scroll-btn scroll-prev" aria-label="向左滑动"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>
+                        <div class="scroll-track">
+                            <a href="images/pillow/pillow-main-1.jpg" class="work-card" data-lightbox>
+                                <img src="images/pillow/pillow-main-1.jpg" alt="枕头主图1" loading="lazy">
+                            </a>
+                            <a href="images/pillow/pillow-main-2.jpg" class="work-card" data-lightbox>
+                                <img src="images/pillow/pillow-main-2.jpg" alt="枕头主图2" loading="lazy">
+                            </a>
+                            <a href="images/pillow/pillow-main-3.jpg" class="work-card" data-lightbox>
+                                <img src="images/pillow/pillow-main-3.jpg" alt="枕头主图3" loading="lazy">
+                            </a>
+                            <a href="images/pillow/pillow-main-4.jpg" class="work-card" data-lightbox>
+                                <img src="images/pillow/pillow-main-4.jpg" alt="枕头主图4" loading="lazy">
+                            </a>
+                            <a href="images/pillow/pillow-main-5.jpg" class="work-card" data-lightbox>
+                                <img src="images/pillow/pillow-main-5.jpg" alt="枕头主图5" loading="lazy">
+                            </a>
+                        </div>
+                        <button class="scroll-btn scroll-next" aria-label="向右滑动"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button>
+                    </div>
+                </div>
+
+                <div class="works-group">
+                    <div class="group-head">
+                        <h3 class="group-title">蓬松喷雾（海外）</h3>
+                        <span class="group-count">5 张主图</span>
+                    </div>
+                    <div class="scroll-carousel">
+                        <button class="scroll-btn scroll-prev" aria-label="向左滑动"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>
+                        <div class="scroll-track">
+                            <a href="images/spray/spray-7.webp" class="work-card" data-lightbox>
+                                <img src="images/spray/spray-7.webp" alt="蓬松喷雾白底" loading="lazy">
+                            </a>
+                            <a href="images/spray/spray-1.png" class="work-card" data-lightbox>
+                                <img src="images/spray/spray-1.png" alt="蓬松喷雾1" loading="lazy">
+                            </a>
+                            <a href="images/spray/spray-2.png" class="work-card" data-lightbox>
+                                <img src="images/spray/spray-2.png" alt="蓬松喷雾2" loading="lazy">
+                            </a>
+                            <a href="images/spray/spray-3.png" class="work-card" data-lightbox>
+                                <img src="images/spray/spray-3.png" alt="蓬松喷雾3" loading="lazy">
+                            </a>
+                            <a href="images/spray/spray-4.png" class="work-card" data-lightbox>
+                                <img src="images/spray/spray-4.png" alt="蓬松喷雾4" loading="lazy">
+                            </a>
+                        </div>
+                        <button class="scroll-btn scroll-next" aria-label="向右滑动"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button>
+                    </div>
+                </div>
+
+                <div class="works-group">
+                    <div class="group-head">
+                        <h3 class="group-title">REWOMAX 雷沃丝（海外）</h3>
+                        <span class="group-count">8 张主图</span>
+                    </div>
+                    <div class="scroll-carousel">
+                        <button class="scroll-btn scroll-prev" aria-label="向左滑动"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>
+                        <div class="scroll-track">
+                            <a href="images/rewomax/rewomax-main.png" class="work-card" data-lightbox>
+                                <img src="images/rewomax/rewomax-main.png" alt="雷沃丝主图" loading="lazy">
+                            </a>
+                            <a href="images/rewomax/rewomax-sub-1.png" class="work-card" data-lightbox>
+                                <img src="images/rewomax/rewomax-sub-1.png" alt="雷沃丝副图1" loading="lazy">
+                            </a>
+                            <a href="images/rewomax/rewomax-sub-2.png" class="work-card" data-lightbox>
+                                <img src="images/rewomax/rewomax-sub-2.png" alt="雷沃丝副图2" loading="lazy">
+                            </a>
+                            <a href="images/rewomax/rewomax-sub-3.png" class="work-card" data-lightbox>
+                                <img src="images/rewomax/rewomax-sub-3.png" alt="雷沃丝副图3" loading="lazy">
+                            </a>
+                            <a href="images/rewomax/rewomax-sub-4.png" class="work-card" data-lightbox>
+                                <img src="images/rewomax/rewomax-sub-4.png" alt="雷沃丝副图4" loading="lazy">
+                            </a>
+                            <a href="images/rewomax/rewomax-sub-5.png" class="work-card" data-lightbox>
+                                <img src="images/rewomax/rewomax-sub-5.png" alt="雷沃丝副图5" loading="lazy">
+                            </a>
+                            <a href="images/rewomax/rewomax-sub-6.png" class="work-card" data-lightbox>
+                                <img src="images/rewomax/rewomax-sub-6.png" alt="雷沃丝副图6" loading="lazy">
+                            </a>
+                            <a href="images/rewomax/rewomax-sub-7.png" class="work-card" data-lightbox>
+                                <img src="images/rewomax/rewomax-sub-7.png" alt="雷沃丝副图7" loading="lazy">
+                            </a>
+                        </div>
+                        <button class="scroll-btn scroll-next" aria-label="向右滑动"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Banner 海报 -->
+            <div class="works-panel" id="panel-banner">
+                <div class="works-group">
+                    <h3 class="group-title">洁牙器 Banner & 海报</h3>
+                    <div class="works-grid grid-2">
+                        <a href="images/ecom/jieya-banner-1.png" class="work-card" data-lightbox>
+                            <img src="images/ecom/jieya-banner-1.png" alt="洁牙器Banner" loading="lazy">
+                        </a>
+                        <a href="images/ecom/jieya-banner-2.png" class="work-card" data-lightbox>
+                            <img src="images/ecom/jieya-banner-2.png" alt="洁牙器Banner2" loading="lazy">
+                        </a>
+                        <a href="images/ecom/jieya-poster-618.png" class="work-card" data-lightbox>
+                            <img src="images/ecom/jieya-poster-618.png" alt="洁牙器618海报" loading="lazy">
+                        </a>
+                        <a href="images/ecom/jieya-poster-1111.png" class="work-card" data-lightbox>
+                            <img src="images/ecom/jieya-poster-1111.png" alt="洁牙器双11海报" loading="lazy">
+                        </a>
+                    </div>
+                </div>
+
+                <div class="works-group">
+                    <h3 class="group-title">风扇 Banner & 海报</h3>
+                    <div class="works-grid grid-2">
+                        <a href="images/fan/fan-banner-1.jpg" class="work-card" data-lightbox>
+                            <img src="images/fan/fan-banner-1.jpg" alt="风扇Banner" loading="lazy">
+                        </a>
+                        <a href="images/fan/fan-banner-2.jpg" class="work-card" data-lightbox>
+                            <img src="images/fan/fan-banner-2.jpg" alt="风扇Banner2" loading="lazy">
+                        </a>
+                        <a href="images/fan/fan-poster-618.png" class="work-card" data-lightbox>
+                            <img src="images/fan/fan-poster-618.png" alt="风扇618海报" loading="lazy">
+                        </a>
+                        <a href="images/fan/fan-poster-618-2.png" class="work-card" data-lightbox>
+                            <img src="images/fan/fan-poster-618-2.png" alt="风扇618海报2" loading="lazy">
+                        </a>
+                    </div>
+                </div>
+
+                <div class="works-group">
+                    <h3 class="group-title">枕头 Banner & 海报</h3>
+                    <div class="works-grid grid-2">
+                        <a href="images/pillow/pillow-banner-1.png" class="work-card" data-lightbox>
+                            <img src="images/pillow/pillow-banner-1.png" alt="枕头Banner" loading="lazy">
+                        </a>
+                        <a href="images/pillow/pillow-banner-2.png" class="work-card" data-lightbox>
+                            <img src="images/pillow/pillow-banner-2.png" alt="枕头Banner2" loading="lazy">
+                        </a>
+                        <a href="images/pillow/pillow-poster-618.png" class="work-card" data-lightbox>
+                            <img src="images/pillow/pillow-poster-618.png" alt="枕头618海报" loading="lazy">
+                        </a>
+                        <a href="images/pillow/pillow-poster-1111.png" class="work-card" data-lightbox>
+                            <img src="images/pillow/pillow-poster-1111.png" alt="枕头双11海报" loading="lazy">
+                        </a>
+                    </div>
+                </div>
+
+                <div class="works-group">
+                    <h3 class="group-title">蓬松喷雾 Banner</h3>
+                    <div class="works-grid grid-2">
+                        <a href="images/spray/spray-5.png" class="work-card" data-lightbox>
+                            <img src="images/spray/spray-5.png" alt="蓬松喷雾Banner1" loading="lazy">
+                        </a>
+                        <a href="images/spray/spray-6.png" class="work-card" data-lightbox>
+                            <img src="images/spray/spray-6.png" alt="蓬松喷雾Banner2" loading="lazy">
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 详情页 -->
+            <div class="works-panel" id="panel-detail">
+                <div class="works-group">
+                    <h3 class="group-title">REWOMAX 雷沃丝 A+ 详情页</h3>
+                    <div class="works-grid detail-grid">
+                        <a href="images/rewomax/rewomax-aplus.png" class="work-card detail-card" data-lightbox>
+                            <img src="images/rewomax/rewomax-aplus.png" alt="雷沃丝A+详情页" loading="lazy">
+                        </a>
+                    </div>
+                </div>
+
+                <div class="works-group">
+                    <h3 class="group-title">产品详情页</h3>
+                    <div class="works-grid detail-grid">
+                        <a href="images/ecom/jieya-detail.png" class="work-card detail-card" data-lightbox>
+                            <img src="images/ecom/jieya-detail.png" alt="洁牙器详情页" loading="lazy">
+                        </a>
+                        <a href="images/fan/fan-detail.jpg" class="work-card detail-card" data-lightbox>
+                            <img src="images/fan/fan-detail.jpg" alt="风扇详情页" loading="lazy">
+                        </a>
+                        <a href="images/pillow/pillow-detail.png" class="work-card detail-card" data-lightbox>
+                            <img src="images/pillow/pillow-detail.png" alt="枕头详情页" loading="lazy">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 04 核心能力 -->
+    <section class="section section-skills" id="skills">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-num">05</div>
+                <h2 class="section-title">核心能力</h2>
+                <p class="section-sub">// SKILLS</p>
+            </div>
+
+            <div class="skills-grid">
+                <div class="skill-card">
+                    <div class="skill-icon">01</div>
+                    <h3>提示词工程</h3>
+                    <p>精准表达视觉意图，跨模型可复用</p>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">02</div>
+                    <h3>分镜脚本</h3>
+                    <p>从文案到画面的拆解与节奏设计</p>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">03</div>
+                    <h3>AI 海报设计</h3>
+                    <p>主图、详情页、Banner、活动海报</p>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">04</div>
+                    <h3>电商视觉体系</h3>
+                    <p>主图矩阵、活动专题、品牌店铺</p>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">05</div>
+                    <h3>TVC 创意策划</h3>
+                    <p>产品卖点可视化、场景化种草</p>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">06</div>
+                    <h3>后期精修</h3>
+                    <p>AI 出图到商业交付的最后一公里</p>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">07</div>
+                    <h3>AI 视频生成</h3>
+                    <p>Sora / Runway / Kling 多工具组合</p>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">08</div>
+                    <h3>IP 形象设计</h3>
+                    <p>角色设定、世界观构建、视觉风格</p>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">09</div>
+                    <h3>品牌 KV</h3>
+                    <p>主视觉、延展应用、品牌调性</p>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">10</div>
+                    <h3>流程标准化</h3>
+                    <p>把单点能力封装为可复用 SOP</p>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">11</div>
+                    <h3>团队赋能培训</h3>
+                    <p>AIGC 工具链内训与提效</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-inner">
+                <span>© 2026 阿百川 · AIGC 作品集</span>
+                <button class="back-top" id="backTop" aria-label="回到顶部">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+                </button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 视频弹窗 -->
+    <div class="video-modal" id="videoModal">
+        <div class="modal-mask"></div>
+        <div class="modal-body">
+            <button class="modal-close" id="modalClose">×</button>
+            <video id="modalVideo" controls></video>
+        </div>
+    </div>
+
+    <!-- 图片灯箱 -->
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" id="lightboxClose">×</button>
+        <div class="lightbox-hint">滚轮缩放 · 拖拽移动 · 点击空白关闭</div>
+        <div class="lightbox-controls">
+            <button class="lb-control" id="lbZoomOut" aria-label="缩小">−</button>
+            <button class="lb-control" id="lbReset" aria-label="重置">⌂</button>
+            <button class="lb-control" id="lbZoomIn" aria-label="放大">+</button>
+        </div>
+        <div class="lightbox-viewport" id="lightboxViewport">
+            <img id="lightboxImg" alt="" draggable="false">
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
