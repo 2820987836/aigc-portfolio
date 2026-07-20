@@ -490,6 +490,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
     background: var(--accent);
     border-radius: 50%;
     box-shadow: 0 0 12px var(--accent);
+    display: none;
 }
 
 .mn1 { top: 0; left: 50%; transform: translateX(-50%); }
