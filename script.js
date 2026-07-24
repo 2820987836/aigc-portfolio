@@ -331,6 +331,7 @@ function initCarousel() {
         video.loop = true;
         video.playsInline = true;
         video.autoplay = true;
+        video.preload = 'metadata';
         video.setAttribute('muted', '');
         return video;
     }
